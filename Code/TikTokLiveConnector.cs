@@ -53,8 +53,7 @@ public partial class TikTokLiveConnector : Component
 					.FirstOrDefault( t => t.Name.ToLower() == message.Type.ToLower() );
 
 				if ( messageType == null ) {
-					if ( !Game.IsEditor ) continue;
-					Log.Info( new TikTokLiveConnectorUnknownMessage( message ) );
+					if ( Debug ) Log.Warning( new TikTokLiveConnectorUnknownMessage( message ) );
 					continue;
 				}
 				

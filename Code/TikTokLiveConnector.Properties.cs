@@ -4,6 +4,13 @@ namespace Minima.TikTokLive;
 
 public partial class TikTokLiveConnector : ITikTokLiveEvents {
 	/// <summary>
+	/// Enables or disables debug mode for the TikTok Live Connector.
+	/// </summary>
+	[Sync]
+	[Property]
+	public bool Debug { get; set; } = false;
+	
+	/// <summary>
 	/// Represents the amount of viewers in the room.
 	/// </summary>
 	[Sync]

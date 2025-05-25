@@ -53,15 +53,15 @@ public partial class TikTokLiveConnector : Component
 					.FirstOrDefault( t => t.Name.ToLower() == message.Type.ToLower() );
 
 				if ( messageType == null ) {
-					Log.Info( $"Unknown message type: {message.Type}" );
+					if ( !Game.IsEditor ) continue;
+					Log.Info( new TikTokLiveConnectorUnknownMessage( message ) );
 					continue;
 				}
 				
 				var webcastMessage = (BaseWebcastMessage)message.Data.Deserialize(messageType.TargetType, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 				webcastMessage?.Handle(this);
 			} catch ( Exception e ) {
-				var data = message.Data.ToJsonString( new JsonSerializerOptions { WriteIndented = true, IndentSize = 4 });
-				Log.Error( new TikTokLiveConnectorError( message.Type, e.ToString(), data ) );
+				Log.Error( new TikTokLiveConnectorError( message, e ) );
 			}
 		}
 	}

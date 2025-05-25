@@ -8,6 +8,6 @@ public struct SocketMessage {
 
 	public struct Message {
 		public string Type { get; set; }
-		public JsonObject Data { get; set; }
+		public JsonObject? Data { get; set; }
 	}
 }

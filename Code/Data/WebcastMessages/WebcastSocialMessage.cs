@@ -22,14 +22,14 @@ public class WebcastSocialMessage : BaseWebcastMessage {
 		// TODO: Determine the kind in the getter whilst also logging unknown kinds when debug is enabled.
 		if ( Event is { EventDetails: { } details } ) {
 			switch ( details.Label ) {
-				case "{0:user} followed the LIVE":
+				case "{0:user} followed the LIVE creator":
 					SocialKind = Kind.Follow;
 					break;
 				case "{0:user} shared the LIVE":
 					SocialKind = Kind.Share;
 					break;
 				default:
-					if( tikTokLiveConnector.Debug ) Log.Warning( $"Unknown WebcastSocialMessage Label {details.Label}" );
+					if( tikTokLiveConnector.Debug ) Log.Warning( $"Unknown WebcastSocialMessage Label '{details.Label}'" );
 					break;
 			}
 		}

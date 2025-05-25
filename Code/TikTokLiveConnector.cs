@@ -31,13 +31,12 @@ public partial class TikTokLiveConnector : Component
 	protected override void OnStart() {
 		if ( Networking.IsClient )
 			return;
-
+		
 		if ( ConnectionUri == null ) {
-			Log.Error( "No connection URI provided. Please set the 'ttl_uri' ConVar." );
-			Game.Close();
+			Log.Info("ConnectionUri isn't set. Please set the 'ttl_uri' ConVar to enable the TikTok Live Connector.");
 			return;
 		}
-
+		
 		Socket = new WebSocket();
 		Socket.OnMessageReceived += SocketMessageReceived;
 		Socket.Connect( ConnectionUri );

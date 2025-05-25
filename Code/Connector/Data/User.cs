@@ -1,4 +1,12 @@
-﻿namespace Minima.TikTokLive;
+﻿using System.Linq;
+
+namespace Minima.TikTokLive;
+
+/// Thanks to the awesome people at TikTok-Live-Connector
+/// https://github.com/zerodytrash/TikTok-Live-Connector/blob/ecde03a3113b45c30e9d43b6a686ef6b40d297e2/.proto/tiktok-schema.ts
+
+// Custom Functionality Provided:
+//   - User.ProfilePicture.Jpeg
 
 public struct User {
 	public string UserId { get; set; }
@@ -13,6 +21,11 @@ public struct User {
 
 	public struct UserProfilePicture {
 		public string[] Urls { get; set; }
+
+		/// <summary>
+		/// A library provided convenience method
+		/// </summary>
+		public string? Jpeg => Urls.FirstOrDefault( url => url.Contains( ".jpeg" ) );
 	}
 
 	public struct UserBadgesAttributes {

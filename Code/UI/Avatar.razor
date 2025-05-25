@@ -1,0 +1,50 @@
+﻿@using System
+@using Sandbox
+@using Sandbox.UI
+@namespace Minima.TikTokLive.UI
+@inherits Panel
+
+<root class="@Class">
+	@if ( User is { ProfilePicture: { Jpeg: { } Jpeg } } ) {
+		<image src=@Jpeg />
+	} else if ( ChildContent is { } childContent ) {
+		@childContent
+	}
+</root>
+
+@code {
+	/// <summary>
+	/// The class to apply to the avatar element.
+	/// </summary>
+	public string Class { get; set; } = String.Empty;
+	
+	/// <summary>
+	/// The user associated with the message.
+	/// </summary>
+	public User? User { get; set; }
+	
+	/// <summary>
+	/// The fallback content to render inside the avatar.
+	/// </summary>
+	public RenderFragment? ChildContent { get; set; }
+
+	protected override int BuildHash() =>
+		HashCode.Combine( User is null, ChildContent?.GetHashCode() );
+}
+
+<style>
+	Avatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1 / 1;
+		
+		border-radius: 50%;
+		overflow: hidden;
+		
+		image {
+			width: 100%;
+			height: 100%;
+		}   
+	}
+</style>

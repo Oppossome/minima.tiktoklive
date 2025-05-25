@@ -11,42 +11,50 @@
 using Minima.TikTokLive;
 
 public class TikTokExample: Component, ITikTokLiveEvents {
-    void ITikTokLiveEvents.OnChat( WebcastChatMessage msg ) {
-       if ( msg.User is not {} user )
-          return;
-       
-       Log.Info($"[{user.Nickname}]: {msg.Comment}"  );
-    }
-    
-    void ITikTokLiveEvents.OnGift( WebcastGiftMessage msg ) {
-       if ( msg.User is not {} user || msg.GiftDetails is not {} giftDetails )
-          return;
-    
-       Log.Info($"[{user.Nickname}] sent a gift {giftDetails.GiftName} worth {giftDetails.DiamondCount} diamonds"  );
-    }
-    
-    void ITikTokLiveEvents.OnLike( WebcastLikeMessage msg ) {
-       if ( msg.User is not {} user )
-          return;
-       
-       Log.Info($"[{user.Nickname}] liked the stream {msg.LikeCount} times." );
-    }
-    
-    void ITikTokLiveEvents.OnSubNotify( WebcastSubNotifyMessage msg ) {
-       if ( msg.User is not {} user )
-          return;
-       
-       Log.Info($"[{user.Nickname}] subscribed to the stream." );
-    }
-    
-    void ITikTokLiveEvents.OnSocialMessage( WebcastSocialMessage msg ) {
-       if ( msg.User is not {} user )
-          return;
-       
-       if ( msg.SocialKind == WebcastSocialMessage.Kind.Follow )
-          Log.Info($"[{user.Nickname}] followed the stream." );
-       else if ( msg.SocialKind == WebcastSocialMessage.Kind.Share )
-          Log.Info($"[{user.Nickname}] shared the stream." );
-    }
+	void ITikTokLiveEvents.OnChat( WebcastChatMessage msg ) {
+		if ( msg.User is not {} user )
+			return;
+		
+		Log.Info($"[{user.Nickname}]: {msg.Comment}"  );
+	}
+	
+	void ITikTokLiveEvents.OnGift( WebcastGiftMessage msg ) {
+		if ( msg.User is not {} user || msg.GiftDetails is not {} giftDetails )
+			return;
+	
+		Log.Info($"[{user.Nickname}] sent a gift {giftDetails.GiftName} worth {giftDetails.DiamondCount} diamonds"  );
+	}
+	
+	void ITikTokLiveEvents.OnLike( WebcastLikeMessage msg ) {
+		if ( msg.User is not {} user )
+			return;
+		
+		Log.Info($"[{user.Nickname}] liked the stream {msg.LikeCount} times." );
+	}
+	
+	void ITikTokLiveEvents.OnSubNotify( WebcastSubNotifyMessage msg ) {
+		if ( msg.User is not {} user )
+			return;
+		
+		Log.Info($"[{user.Nickname}] subscribed to the stream." );
+	}
+	
+	void ITikTokLiveEvents.OnSocialMessage( WebcastSocialMessage msg ) {
+		if ( msg.User is not {} user )
+			return;
+		
+		if ( msg.MessageKind == WebcastSocialMessage.Kind.Follow )
+			Log.Info($"[{user.Nickname}] followed the stream." );
+		else if ( msg.MessageKind == WebcastSocialMessage.Kind.Share )
+			Log.Info($"[{user.Nickname}] shared the stream." );
+	}
+	
+	void ITikTokLiveEvents.OnMemberMessage( WebcastMemberMessage msg ) {
+		if ( msg.User is not {} user )
+			return;
+		
+		if ( msg.MessageKind == WebcastMemberMessage.Kind.Join )
+			Log.Info($"[{user.Nickname}] joined the stream." );
+	}
 }
 ```

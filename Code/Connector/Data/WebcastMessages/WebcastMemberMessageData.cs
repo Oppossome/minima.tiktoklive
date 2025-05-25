@@ -3,6 +3,9 @@
 /// Thanks to the awesome people at TikTok-Live-Connector
 /// https://github.com/zerodytrash/TikTok-Live-Connector/blob/ecde03a3113b45c30e9d43b6a686ef6b40d297e2/.proto/tiktok-schema.ts
 
+// Custom Functionality Provided:
+//   - WebcastMemberMessage.Kind
+
 /// <summary>
 /// Event data for a user performing an action in the room.
 /// e.g. Joining
@@ -12,8 +15,27 @@ public class WebcastMemberMessage : BaseWebcastMessage {
 	public User? User { get; set; }
 	public int ActionId { get; set; }
 
-	public override void Handle( TikTokLiveConnector tikTokLiveConnector ) =>
+	/// <summary>
+	/// A field written by the S&Box TikTok Live Connector to simplify the process of decoding the message.
+	/// </summary>
+	public Kind MessageKind { get; private set; } = Kind.Unknown;
+
+	public override void Handle( TikTokLiveConnector tikTokLiveConnector ) {
+		// TODO: Determine the kind in the getter whilst also logging unknown kinds when debug is enabled.
+		if ( Event is { EventDetails: { } details } ) {
+			switch ( details.Label ) {
+				case "{0:user} joined":
+					MessageKind = Kind.Join;
+					break;
+				default:
+					if ( tikTokLiveConnector.Debug ) Log.Warning( $"Unknown WebcastMemberMessage Label '{details.Label}'" );
+					break;
+			}
+		}
+
+
 		ITikTokLiveEvents.Post( ttle => ttle.OnMemberMessage( this ) );
+	}
 
 	public struct WebcastMemberMessageEvent {
 		public string MsgId { get; set; }
@@ -24,5 +46,10 @@ public class WebcastMemberMessage : BaseWebcastMessage {
 			public string DisplayType { get; set; }
 			public string Label { get; set; }
 		}
+	}
+
+	public enum Kind {
+		Unknown = 0,
+		Join = 1,
 	}
 }
